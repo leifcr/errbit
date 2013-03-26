@@ -108,6 +108,9 @@ group :heroku, :production do
   # gem 'unicorn'
   gem 'puma'
 end
+group :production do
+  gem 'bluepill' # monitor daemons...
+end
 
 # Use thin for development
 gem 'thin', :group => :development, :platform => :ruby
