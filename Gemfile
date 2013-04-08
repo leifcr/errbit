@@ -106,10 +106,10 @@ end
 
 group :heroku, :production do
   # gem 'unicorn'
-  gem 'puma'
+  gem "puma", "~> 2.0.0.b7"
 end
 group :production do
-  gem 'bluepill' # monitor daemons...
+  gem "bluepill", :git => "git://github.com/leifcr/bluepill.git" # monitor daemons...
 end
 
 # Use thin for development
