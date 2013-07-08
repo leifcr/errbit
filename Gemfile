@@ -92,6 +92,10 @@ group :development, :test do
   gem 'better_errors', :platform => :ruby_19
   gem 'binding_of_caller', :platform => :ruby_19
   gem 'meta_request', :platform => :ruby_19
+
+  gem 'capistrano-pumaio'
+  gem 'capistrano-delayed_job'
+
 end
 
 gem 'foreman', :group => :development
@@ -106,10 +110,7 @@ end
 
 group :heroku, :production do
   # gem 'unicorn'
-  gem "puma", "~> 2.0.0.b7"
-end
-group :production do
-  gem "bluepill", :git => "git://github.com/leifcr/bluepill.git" # monitor daemons...
+  gem "puma"
 end
 
 # Use thin for development
