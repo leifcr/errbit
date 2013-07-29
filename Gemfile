@@ -113,8 +113,6 @@ group :development do
   gem 'meta_request', :platform => :ruby_19
 
   gem 'capistrano-pumaio'
-  gem 'capistrano-delayed_job'
-
 end
 
 group :test do
