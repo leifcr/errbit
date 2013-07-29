@@ -132,7 +132,6 @@ GEM
       tilt
     happymapper (0.4.0)
       libxml-ruby (~> 2.0)
-    has_scope (0.5.1)
     hashie (1.2.0)
     highline (1.6.19)
     hike (1.2.3)
@@ -150,9 +149,6 @@ GEM
       multi_xml (>= 0.5.2)
     httpauth (0.2.0)
     i18n (0.6.1)
-    inherited_resources (1.4.0)
-      has_scope (~> 0.5.0)
-      responders (~> 0.9)
     journey (1.0.4)
     jquery-rails (2.1.4)
       railties (>= 3.0, < 5.0)
@@ -284,6 +280,7 @@ GEM
       json (~> 1.4)
     responders (0.9.3)
       railties (~> 3.1)
+    ref (1.0.5)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     ri_cal (0.8.8)
@@ -396,7 +393,6 @@ DEPENDENCIES
   hoptoad_notifier (~> 2.4)
   htmlentities
   httparty
-  inherited_resources
   jquery-rails (~> 2.1.4)
   kaminari (>= 0.14.1)
   launchy
