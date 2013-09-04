@@ -136,7 +136,7 @@ Deploying:
   * Setup server and deploy
 
 ```bash
-cap deploy:setup deploy
+cap deploy:setup deploy db:create_mongoid_indexes
 ```
 
 (Note: The capistrano deploy script will automatically generate a unique secret token.)
@@ -156,7 +156,9 @@ git clone http://github.com/errbit/errbit.git
 
 ```bash
 gem install heroku
-heroku create example-errbit --stack cedar
+heroku create example-errbit
+# If you really want, you can define your stack and your buildpack. the default is good to us :
+# heroku create example-errbit --stack cedar --buildpack https://github.com/heroku/heroku-buildpack-ruby.git
 heroku addons:add mongolab:sandbox
 heroku addons:add sendgrid:starter
 heroku config:add HEROKU=true
@@ -166,10 +168,12 @@ heroku config:add ERRBIT_EMAIL_FROM=example@example.com
 git push heroku master
 ```
 
-  * Seed the DB (_NOTE_: No bootstrap task is used on Heroku!)
+  * Seed the DB (_NOTE_: No bootstrap task is used on Heroku!) and
+    create index
 
 ```bash
 heroku run rake db:seed
+heroku run rake db:mongoid:create_indexes
 ```
 
   * If you are using a free database on Heroku, you may want to periodically clear resolved errors to free up space.
@@ -325,6 +329,7 @@ When upgrading Errbit, please run:
 git pull origin master # assuming origin is the github.com/errbit/errbit repo
 bundle install
 rake db:migrate
+rake assets:precompile
 ```
 
 If we change the way that data is stored, this will run any migrations to bring your database up to date.
@@ -423,6 +428,26 @@ card_type = Defect, status = Open, priority = Essential
 * Project id the id of your project where your ticket is create
 * Milestone id the id of your milestone where your ticket is create
 
+**Jira Issue Integration**
+
+* base_url the jira URL
+* context_path Context Path (Just "/" if empty otherwise with leading slash)
+* username HTTP Basic Auth User
+* password HTTP Basic Auth Password
+* project_id The project Key where the issue will be created
+* account Assign to this user. If empty, Jira takes the project default.
+* issue_component Website - Other
+* issue_type Issue type
+* issue_priority Priority
+
+Notification Service
+--------------------
+
+**Flowdock Notification**
+
+Allow notification to [Flowdock](https://www.flowdock.com/). See
+[complete documentation](docs/notifications/flowdock/index.md)
+
 
 What if Errbit has an error?
 ----------------------------
@@ -496,10 +521,11 @@ Special Thanks
 * [Nathan Broadbent (@ndbroadbent)](https://github.com/ndbroadbent) - Maintaining Errbit and contributing many features
 * [Vasiliy Ermolovich (@nashby)](https://github.com/nashby) - Contributing and helping to resolve issues and pull requests
 * [Marcin Ciunelis (@martinciu)](https://github.com/martinciu) - Helping to improve Errbit's architecture
+* [Cyril Mougel (@shingara)](https://github.com/shingara) - Maintaining Errbit and contributing many features
 * [Relevance](http://thinkrelevance.com) - For giving me Open-source Fridays to work on Errbit and all my awesome co-workers for giving feedback and inspiration.
 * [Thoughtbot](http://thoughtbot.com) - For being great open-source advocates and setting the bar with [Airbrake](http://airbrake.io).
 
-See the [contributors graph](https://github.com/errbit/errbit/graphs/contributors) for further details.
+See the [contributors graph](https://github.com/errbit/errbit/graphs/contributors) for further details. You can see another list of Contributors by release version on [CONTRIBUTORS.md]
 
 
 Contributing
@@ -522,6 +548,7 @@ and make **optional** features configurable via `config/config.yml`.
 * Add tests for it. This is important so we don't break it in a future version unintentionally.
 * Commit, do not mess with Rakefile, version, or history. (if you want to have your own version, that is fine but bump version in a commit by itself we can ignore when we pull)
 * Send us a pull request. Bonus points for topic branches.
+* Add you on the CONTRIBUTORS.md file on the current release
 
 
 Copyright

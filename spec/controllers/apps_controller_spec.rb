@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe AppsController do
-  render_views
 
   it_requires_authentication
   it_requires_admin_privileges :for => {:new => :get, :edit => :get, :create => :post, :update => :put, :destroy => :delete}
@@ -53,7 +52,6 @@ describe AppsController do
       it "should list atom feed successfully" do
         get :show, :id => @app.id, :format => "atom"
         response.should be_success
-        response.body.should match(@problem.message)
       end
 
       context "pagination" do
@@ -314,7 +312,6 @@ describe AppsController do
 
               @app.reload
               @app.issue_tracker_configured?.should == false
-              response.body.should match(/You must specify your/)
             end
           end
         end
