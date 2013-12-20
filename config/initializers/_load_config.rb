@@ -9,10 +9,11 @@ unless defined?(Errbit::Config)
   # If Errbit is running on Heroku, config can be set from environment variables.
   if use_env
     Errbit::Config.host = ENV['ERRBIT_HOST']
+    Errbit::Config.port = ENV['ERRBIT_PORT']
     Errbit::Config.email_from = ENV['ERRBIT_EMAIL_FROM']
     #  Not really easy to use like an env because need an array and ENV return a string :(
     # Errbit::Config.email_at_notices = ENV['ERRBIT_EMAIL_AT_NOTICES']
-    Errbit::Config.confirm_resolve_err = ENV['ERRBIT_CONFIRM_RESOLVE_ERR'].to_i == 0
+    Errbit::Config.confirm_err_actions = ENV['ERRBIT_CONFIRM_ERR_ACTIONS'].to_i == 0
     Errbit::Config.user_has_username = ENV['ERRBIT_USER_HAS_USERNAME'].to_i == 1
     Errbit::Config.allow_comments_with_issue_tracker = ENV['ERRBIT_ALLOW_COMMENTS_WITH_ISSUE_TRACKER'].to_i == 0
     Errbit::Config.enforce_ssl = ENV['ERRBIT_ENFORCE_SSL']
@@ -53,7 +54,7 @@ unless defined?(Errbit::Config)
   # Set default devise modules
   Errbit::Config.devise_modules = [:database_authenticatable,
                                    :recoverable, :rememberable, :trackable,
-                                   :validatable, :token_authenticatable, :omniauthable]
+                                   :validatable, :omniauthable]
 end
 
 # Set default settings from config.example.yml if key is missing from config.yml
@@ -78,7 +79,12 @@ end
 
 # Set config specific values
 (ActionMailer::Base.default_url_options ||= {}).tap do |default|
-  default.merge! :host => Errbit::Config.host if default[:host].blank?
+  options_from_config = {
+    host: Errbit::Config.host,
+    port: Errbit::Config.port
+  }.select { |k, v| v }
+
+  default.reverse_merge!(options_from_config)
 end
 
 if Rails.env.production?
