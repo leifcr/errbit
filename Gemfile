@@ -98,7 +98,7 @@ group :development do
   gem 'foreman', :require => false
 
   # Use puma for development
-  gem 'puma', :require => false
+  # gem 'puma', :require => false
 
   gem 'capistrano-pumaio'
 
@@ -114,10 +114,7 @@ group :test do
   gem 'mongoid-rspec', :require => false
 end
 
-group :heroku, :production do
-  gem 'puma'
-  # gem 'unicorn', :require => false
-end
+gem 'puma'
 
 
 # Gems used only for assets and not required
