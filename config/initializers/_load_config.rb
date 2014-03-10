@@ -21,9 +21,11 @@ unless defined?(Errbit::Config)
     Errbit::Config.use_gravatar = ENV['ERRBIT_USE_GRAVATAR']
     Errbit::Config.gravatar_default = ENV['ERRBIT_GRAVATAR_DEFAULT']
 
+    Errbit::Config.github_url = ENV['GITHUB_URL']
     Errbit::Config.github_authentication = ENV['GITHUB_AUTHENTICATION']
     Errbit::Config.github_client_id = ENV['GITHUB_CLIENT_ID']
     Errbit::Config.github_secret = ENV['GITHUB_SECRET']
+    Errbit::Config.github_org_id = ENV['GITHUB_ORG_ID'] if ENV['GITHUB_ORG_ID']
     Errbit::Config.github_access_scope = ENV['GITHUB_ACCESS_SCOPE'].split(',').map(&:strip) if ENV['GITHUB_ACCESS_SCOPE']
 
     Errbit::Config.smtp_settings = {
@@ -63,6 +65,10 @@ default_config.each do |k,v|
   Errbit::Config.send("#{k}=", v) if Errbit::Config.send(k) === nil
 end
 
+# Make sure the GitHub link doesn't end with a slash, so we don't have to deal
+# with it later on in the code.
+Errbit::Config.github_url.gsub!(/\/*\z/, '')
+
 # Disable GitHub oauth if gem is missing
 Errbit::Config.github_authentication = false unless defined?(OmniAuth::Strategies::GitHub)
 
@@ -81,7 +87,8 @@ end
 (ActionMailer::Base.default_url_options ||= {}).tap do |default|
   options_from_config = {
     host: Errbit::Config.host,
-    port: Errbit::Config.port
+    port: Errbit::Config.port,
+    protocol: Errbit::Config.protocol
   }.select { |k, v| v }
 
   default.reverse_merge!(options_from_config)
