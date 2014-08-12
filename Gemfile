@@ -98,7 +98,7 @@ group :development do
   # Use puma for development
   # gem 'puma', :require => false
 
-  gem 'capistrano-pumaio'
+  gem 'capistrano-pumaio', require: false
 
 end
 
